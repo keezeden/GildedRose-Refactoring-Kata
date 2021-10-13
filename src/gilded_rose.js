@@ -11,15 +11,11 @@ class Shop {
     this.items = items;
   }
   applyQualityRules(item) {
-    if (item.name != 'Aged Brie' && item.name != 'Backstage passes to a TAFKAL80ETC concert') {
-      // Filter brie and passes
-      if (item.quality > 0) {
-        // No negatives check
-        if (item.name != 'Sulfuras, Hand of Ragnaros') {
-          // Sulfuras check after quality, needed?
-          item.quality = item.quality - 1; // Decrease quality
-        }
-      }
+    const specialItems = ['Aged Brie', 'Backstage passes to a TAFKAL80ETC concert', 'Sulfuras, Hand of Ragnaros'];
+    const isSpecialItem = specialItems.includes(item.name);
+
+    if (!isSpecialItem && item.quality > 0) {
+      item.quality = item.quality - 1; // Decrease quality
     } else {
       // Non-normal items
       if (item.quality < 50) {

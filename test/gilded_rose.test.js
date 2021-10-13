@@ -53,14 +53,14 @@ describe('Gilded Rose', function() {
   });
 
   it('should not decrease quality or sell by date for "Sulfuras"', function() {
-    const gildedRose = new Shop([new Item('Sulfuras, Hand of Ragnaros', 5, 10)]);
+    const gildedRose = new Shop([new Item('Sulfuras, Hand of Ragnaros', 5, 80)]);
     const [item] = gildedRose.items;
 
     expect(item.sellIn).toBe(5);
-    expect(item.quality).toBe(10);
+    expect(item.quality).toBe(80);
     gildedRose.updateQuality();
     expect(item.sellIn).toBe(5);
-    expect(item.quality).toBe(10);
+    expect(item.quality).toBe(80);
   });
 
   it('should increase "Backstage Passes" in quality the older it gets', function() {
