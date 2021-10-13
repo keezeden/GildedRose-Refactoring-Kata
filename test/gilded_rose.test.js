@@ -51,4 +51,15 @@ describe('Gilded Rose', function() {
     gildedRose.updateQuality();
     expect(item.quality).not.toBe(51);
   });
+
+  it('should not decrease quality or sell by date for "Sulfuras"', function() {
+    const gildedRose = new Shop([new Item('Sulfuras, Hand of Ragnaros', 5, 10)]);
+    const [item] = gildedRose.items;
+
+    expect(item.sellIn).toBe(5);
+    expect(item.quality).toBe(10);
+    gildedRose.updateQuality();
+    expect(item.sellIn).toBe(5);
+    expect(item.quality).toBe(10);
+  });
 });
