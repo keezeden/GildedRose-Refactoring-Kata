@@ -1,5 +1,5 @@
 class Item {
-  constructor(name, sellIn, quality){
+  constructor(name, sellIn, quality) {
     this.name = name;
     this.sellIn = sellIn;
     this.quality = quality;
@@ -7,38 +7,54 @@ class Item {
 }
 
 class Shop {
-  constructor(items=[]){
+  constructor(items = []) {
     this.items = items;
   }
-  updateQuality() {
-    for (let i = 0; i < this.items.length; i++) {
-      if (this.items[i].name != 'Aged Brie' && this.items[i].name != 'Backstage passes to a TAFKAL80ETC concert') {
-        if (this.items[i].quality > 0) {
-          if (this.items[i].name != 'Sulfuras, Hand of Ragnaros') {
-            this.items[i].quality = this.items[i].quality - 1;
-          }
+  applyQualityRules(item) {
+    if (item.name != 'Aged Brie' && item.name != 'Backstage passes to a TAFKAL80ETC concert') {
+      // Filter brie and passes
+      if (item.quality > 0) {
+        // No negatives check
+        if (item.name != 'Sulfuras, Hand of Ragnaros') {
+          // Sulfuras check after quality, needed?
+          item.quality = item.quality - 1; // Decrease quality
         }
-      } else {
-        if (this.items[i].quality < 50) {
-          this.items[i].quality = this.items[i].quality + 1;
-          if (this.items[i].name == 'Backstage passes to a TAFKAL80ETC concert') {
-            if (this.items[i].sellIn < 11) {
-              if (this.items[i].quality < 50) {
-                this.items[i].quality = this.items[i].quality + 1;
-              }
+      }
+    } else {
+      // Non-normal items
+      if (item.quality < 50) {
+        // No > 50 check
+        item.quality = item.quality + 1;
+        if (item.name == 'Backstage passes to a TAFKAL80ETC concert') {
+          // Apply backstage pass rules
+          if (item.sellIn < 11) {
+            if (item.quality < 50) {
+              // Double increase edge case check
+              item.quality = item.quality + 1;
             }
-            if (this.items[i].sellIn < 6) {
-              if (this.items[i].quality < 50) {
-                this.items[i].quality = this.items[i].quality + 1;
-              }
+          }
+          if (item.sellIn < 6) {
+            // Apply backstage pass rules
+            if (item.quality < 50) {
+              // Double increase edge case check
+              item.quality = item.quality + 1;
             }
           }
         }
       }
+    }
+  }
+
+  updateQuality() {
+    for (let i = 0; i < this.items.length; i++) {
+      this.applyQualityRules(this.items[i]);
+
       if (this.items[i].name != 'Sulfuras, Hand of Ragnaros') {
+        // Sulfuras check
         this.items[i].sellIn = this.items[i].sellIn - 1;
       }
       if (this.items[i].sellIn < 0) {
+        // Quality decrease
         if (this.items[i].name != 'Aged Brie') {
           if (this.items[i].name != 'Backstage passes to a TAFKAL80ETC concert') {
             if (this.items[i].quality > 0) {
@@ -47,10 +63,11 @@ class Shop {
               }
             }
           } else {
-            this.items[i].quality = this.items[i].quality - this.items[i].quality;
+            this.items[i].quality = this.items[i].quality - this.items[i].quality; // Pass sellIn < 0 quality 0
           }
         } else {
           if (this.items[i].quality < 50) {
+            // Aged brie quality increase
             this.items[i].quality = this.items[i].quality + 1;
           }
         }
@@ -64,4 +81,4 @@ class Shop {
 module.exports = {
   Item,
   Shop
-}
+};
