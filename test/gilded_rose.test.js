@@ -33,4 +33,13 @@ describe('Gilded Rose', function() {
     gildedRose.updateQuality();
     expect(item.quality).not.toBe(-1);
   });
+
+  it('should increases "Aged Brie" in quality the older it gets', function() {
+    const gildedRose = new Shop([new Item('Aged Brie', 2, 10)]);
+    const [item] = gildedRose.items;
+
+    expect(item.quality).toBe(10);
+    gildedRose.updateQuality();
+    expect(item.quality).toBe(11);
+  });
 });
