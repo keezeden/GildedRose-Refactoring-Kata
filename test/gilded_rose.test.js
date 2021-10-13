@@ -34,7 +34,7 @@ describe('Gilded Rose', function() {
     expect(item.quality).not.toBe(-1);
   });
 
-  it('should increases "Aged Brie" in quality the older it gets', function() {
+  it('should increase "Aged Brie" in quality the older it gets', function() {
     const gildedRose = new Shop([new Item('Aged Brie', 2, 10)]);
     const [item] = gildedRose.items;
 
@@ -61,5 +61,41 @@ describe('Gilded Rose', function() {
     gildedRose.updateQuality();
     expect(item.sellIn).toBe(5);
     expect(item.quality).toBe(10);
+  });
+
+  it('should increase "Backstage Passes" in quality the older it gets', function() {
+    const gildedRose = new Shop([new Item('Backstage passes to a TAFKAL80ETC concert', 20, 10)]);
+    const [item] = gildedRose.items;
+
+    expect(item.quality).toBe(10);
+    gildedRose.updateQuality();
+    expect(item.quality).toBe(11);
+  });
+
+  it('should increase "Backstage Passes" in quality by 2 when sellIn < 10, the older it gets', function() {
+    const gildedRose = new Shop([new Item('Backstage passes to a TAFKAL80ETC concert', 7, 10)]);
+    const [item] = gildedRose.items;
+
+    expect(item.quality).toBe(10);
+    gildedRose.updateQuality();
+    expect(item.quality).toBe(12);
+  });
+
+  it('should increase "Backstage Passes" in quality by 3 when sellIn < 5, the older it gets', function() {
+    const gildedRose = new Shop([new Item('Backstage passes to a TAFKAL80ETC concert', 3, 10)]);
+    const [item] = gildedRose.items;
+
+    expect(item.quality).toBe(10);
+    gildedRose.updateQuality();
+    expect(item.quality).toBe(13);
+  });
+
+  it('should decrease "Backstage Passes" in quality to 0 when sellIn is 0', function() {
+    const gildedRose = new Shop([new Item('Backstage passes to a TAFKAL80ETC concert', 0, 10)]);
+    const [item] = gildedRose.items;
+
+    expect(item.quality).toBe(10);
+    gildedRose.updateQuality();
+    expect(item.quality).toBe(0);
   });
 });
