@@ -22,4 +22,15 @@ describe('Gilded Rose', function() {
     gildedRose.updateQuality();
     expect(item.quality).toBe(7);
   });
+
+  it('should never have negative quality', function() {
+    const gildedRose = new Shop([new Item('foo', 0, 1)]);
+    const [item] = gildedRose.items;
+
+    expect(item.quality).toBe(1);
+    gildedRose.updateQuality();
+    expect(item.quality).toBe(0);
+    gildedRose.updateQuality();
+    expect(item.quality).not.toBe(-1);
+  });
 });
